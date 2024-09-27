@@ -63,9 +63,9 @@
 
 ![1727400981883](Github.assets/1727400981883.png)
 
-## 基础操作
+## 本地基础操作
 
-### 初始化git仓库（git init）
+### 初始化 -- git init
 
 > - 把目录变成Git可以管理的仓库，之后会多出来一个  .git 文件夹，此时Box1文件夹就是一个Git仓库了
 >
@@ -75,7 +75,7 @@
 
 ![1727404827548](Github.assets/1727404827548.png)
 
-#### 添加到暂存区（git add）
+### 添加到暂存区 -- git add
 
 > - 在文件还没有提交到git仓库中时，我们可以随便编辑文件
 >
@@ -84,11 +84,7 @@
 > - 可使用git rm --cached 移除缓存
 > - 需要提交的文件修改通通放到暂存区，然后，一次性提交暂存区的所有修改
 
-#### **取消暂存 ( git reset )**
-
-> - 将暂存区的文件取消暂存
-
-#### 提交到本地仓库（git commit）
+### 提交到本地仓库 -- git commit
 
 > - `git commit` -m "whrite something"
 >   - `-m`后面输入的是本次提交的说明，可以输入任意内容，当然最好是有意义的，这样你就能从历史记录里方便地找到改动记录。
@@ -97,83 +93,230 @@
 >
 > - 将暂存区的内容提交到当前分支
 
-#### 在未提交前查看修改（git diff）
+### 在未提交前查看修改 -- git diff
 
 > ![1725985640867](1725985640867.png)
 
-####　查看版本提交记录（git log）
+###　查看版本提交记录 -- git log
 
 > ![1725985980393](1725985980393.png)
 >
 > - 一大串类似`1094adb...`的是   **commit id（版本号）** ，和SVN不一样，Git的`commit id`不是1，2，3……递增的数字，而是一个SHA1计算出来的一个非常大的数字，用十六进制表示
 >   - **为什么`commit id`需要用这么一大串数字表示呢？因为Git是分布式的版本控制系统，后面我们还要研究多人在同一个版本库里工作，如果大家都用1，2，3……作为版本号，那肯定就冲突了**
 
-#### 回退（git ）
+### **回退  --  git reset **
 
-> - 首先要知道当前是哪个版本 ——  用Head表示
->   - 上一个版本就是Head^
->   - 上上一个版本就是Head^^
->   - 往上100个版本Head~100
-> - 回退指令
->   - git reset --hard Head^：回退到上个版本已提交状态
->   - git reset --soft Head^：回退到上个版本的未提交状态
->   - git reset --mixed Head^：回退到上个版本的已添加但未提交状态
-> - 20返回19后怎么从19返回20？
->   - 在命令行窗口未关闭时，往上找到commit id，指定回到20版本
->     - git reset --hard 版本号
->     - 版本号没必要写全，前几位就可以了
-> - 在git总有后悔药可吃
->   - git reflog：会记录你的每一次命令，可查看commit id
+> - 将暂存区的文件取消暂存或切换版本
+> - 
+> - 切换版本
+>   - 首先要知道当前是哪个版本 ——  用Head表示
+>     - 上一个版本就是Head^
+>     - 上上一个版本就是Head^^
+>     - 往上100个版本Head~100
+>   - 回退指令
+>     - git reset --hard Head^：回退到上个版本已提交状态
+>     - git reset --soft Head^：回退到上个版本的未提交状态
+>     - git reset --mixed Head^：回退到上个版本的已添加但未提交状态
+>   - 20返回19后怎么从19返回20？
+>     - 在命令行窗口未关闭时，往上找到commit id，指定回到20版本
+>       - git reset --hard 版本号
+>         - **版本号没必要写全，前几位就可以了**
+>         - ![1727407763297](Github.assets/1727407763297.png)
+>       - **若窗口关闭，git也总有后悔药可吃**
+>         - git reflog：会记录你的每一次命令，可查看commit id
+>
+
+### 版本回退问题实例
+
+> - 在依次更新并push后，我们有三个版本：版本1，版本2，版本3
+
+![1727451489922](Github.assets/1727451489922.png)
+
+> - 此时选择回退到版本1，若直接 git push origin master 会显示当前版本落后远程版本
+> - 选用 git push --force origin master强制回退
+
+![1727451540532](Github.assets/1727451540532.png)
+
+> - 此时使用git log 查看版本则只会显示版本1 与之前的版本，不会显示版本2和3
+> - 使用  git reflog 查看最近的版本，在命令行没有被关闭的前提下
+> - 使用 git reset --hard +上版本哈的哈希码回退
+>   - git reset --hard 16b0233
+> - 然后在 --hard 提交
+
+![1727451575967](Github.assets/1727451575967.png)
+
+
 
 ### 撤销修改
 
-> - 将工作区的修改全部撤销（git checkout -- readme.txt）
+> - 将工作区的修改全部撤销  --  git checkout 
 >   - 修改后还未放入暂存区：回到和版本库一模一样的状态
 >   - 已添加到暂存区：回到添加到暂存区后的状态
 >   - 总之，就是让这个文件回到最近一次`git commit` 或 `git add`时的状态。
-> - 将暂存区的修改撤销（git reset HEAD <file>）
+> - 将暂存区的修改撤销  --  git reset HEAD <file>
 
-### 删除文件（git rm）
+### 删除文件 -- git rm
 
 > git rm test.txt
 
-### 查看/创建分支（git branch）
 
-> - 产看当前分支
+
+## 远程仓库操作
+
+### 查看远程仓库  --  git remote
+
+> - 查看当前项目有哪些远程仓库
 >
-> ![1726020591745](1726020591745.png)
+>   - git remote -v 
 >
+>   ![1726040695096](1726040695096.png)
+
+### 添加远程仓库  --  git remote  add
+
+> - git remote add origin  仓库地址
+>   - git remote add origin git@github.com:stormzhang/test.git
+>     - 添加一个远程仓库
+>     - 名字是： git@github.com:stormzhang/test.git
+>     - orgin 是给远程仓库起的名字
+>       - 仓库唯一时随便
+>       - 不唯一时要区分
+
+### 拉取  --  clone 
+
+> - git clone git@github.com:syd3344/GitNote.git 
+>   - 这便将github项目克隆到了本地
+>   - 项目本身就是一个git仓库
+>   - 在GitNote.git 下任意修改或者添加进行commit之后就可以Push
+
+### 推送  --  Push 
+
+> - 推送到指定仓库  ——  git push <remote-name> (仓库名字)
+>
+>   - git push origin master - 推送本地分支master到远程仓库**origin**       
+>
+>   - git push origin feature-branch - 推送本地分支feature-branch到远程仓库origin 
+>
+>     
+>
+> - 推送指定分支到指定仓库   ——  git push origin <local-branch>:<remote-branch>
+>
+>   - 推送本地 master 分支内的 test.txt 文件 到远程仓库 Git Node 中 的main 分支  的示例代码
+>   - git push origin master:main
+
+### 更新  --  pull
+
+> - 
+
+
+
+## 错误场景
+
+### 第一天
+
+> - 第一天，本地创建仓库，写代码，提交远程
+>
+>   - 场景
+>
+>     - 创建本地仓库后，要先建立连接再去写代码
+>     - 如果 先写代码 在建立连接 在pull 就会报错
+>
+>     - ![1727420197812](Github.assets/1727420197812.png)
+>
+>   - 解决办法
+>
+>     - 强制执行拉 git pull origin master  --allow-unrelate
+>     - ![1727420389947](Github.assets/1727420389947.png)
+>     - ![1727420369877](Github.assets/1727420369877.png)
+>     - 同时按下 shift + :，输入q退出
+
+### 第二天
+
+> - 第二天，正常提交代码，和他人开发同一个项目，但不是同一个文件
+>   - **错误场景**
+>     - ![1727420864630](Github.assets/1727420864630.png)
+>   - 解决办法
+>     - **每次提交之前要先拉**
+
+### 第三天
+
+> - 第三天，和同事开发同一个文件
+>   - 错误场景
+>     - A刚拉完，B提交了
+>       - ![1727421429372](Github.assets/1727421429372.png)
+>       - 因为处理的是同一个文件，此时按照信息pull时会产生冲突问题，不知道先后顺序
+>         - ![1727421580133](Github.assets/1727421580133.png)
+>       - 文件变成交叉样式
+>         - ![1727421614645](Github.assets/1727421614645.png)
+>   - 解决办法
+>     - **手动解决排序冲突**
+>     - **标记文件为已解决**
+>       - git add hahah.txt
+>     - **继续 Rebase**
+>       - git rebase --continue
+>         - **git rebase --continue 可以替换为 git -commit 吗？**
+>           - 不可以。`git rebase --continue` 和 `git commit` 是不同的命令，适用于不同的场景：
+>           - **git rebase --continue**：这个命令用于继续一个正在进行的 rebase 操作，尤其是在解决冲突之后。它会将解决后的更改应用到当前的提交历史上。
+>           - **git commit**：这个命令用于创建一个新的提交，适用于任何时候你需要提交当前的更改，但在 rebase 过程中，你应该使用 `git rebase --continue`。
+>           - 如果你正在进行 rebase 操作并解决了冲突，必须使用 `git rebase --continue` 来继续操作。
+>         - `rebase` 操作是指在尝试将某个提交（例如你提到的 `2947083...`）的更改应用到当前分支时，Git 遇到了冲突。具体来说，这个过程涉及以下几个步骤：
+>           - **更新历史**：你可能在某个特性分支上执行 `git rebase`，想将这个分支的更改应用到最新的基础上（通常是主分支）。
+>           - **遇到冲突**：在自动应用提交时，Git 发现某些文件（如 `exception/hahah.txt`）中存在内容冲突，这使得无法直接合并这些更改。
+>           - **解决冲突**：Git 暂停了 rebase 操作，提示你手动解决冲突，标记解决后的文件，然后继续 rebase。
+>           - 在这种情况下，`rebase` 旨在让你的特性分支与主分支的最新状态保持一致，但由于冲突的存在，导致操作未能成功完成。你需要解决冲突，标记文件为已解决，然后运行 `git rebase --continue` 来继续操作。
+
+
+
+## 分支
+
+> - 分支  --  备份
+>   - 保证主体的安全性
+>     - 分支挂了不影响主干
+>   - 环境区分，开发各自的代码，相互独立，互不影响
+>   - 本地和远程都可以创建分支
+
+### 查看分支
+
+> - git branch      --  查看所有本地分支
+>- ![1726020591745](1726020591745.png)
+> - git branch  -r  --  查看所有远程分支
+>- git branch  -a  --  列出所有本地和远程分支
 > 
->
-> - 创建分支
->
-> ![1726020694752](1726020694752.png)
 
-### 切换分支( git checkout a )
+### 创建分支
+
+> - git branch name
+> - 在master分支下
+> - ![1726020694752](1726020694752.png)
+
+### 切换分支
 
 > - 切换已有分支
+>   - git checkout a
 >
 > ![1726021417272](1726021417272.png)
 >
 > - 创建并切换到该分支
+>   - git checkout -b b
 >
 > ![1726021540528](1726021540528.png)
 
-### 合并分支( git merge a )
+### 合并分支 -- git merge a
 
-> 流程
->
-> - 切换到master
-> - 合并分支
+> - 两种方式
+>   - 方式一：先在本地合并
+>     - 先切到master分支
+>     - git merge a
+>   - 方式二：先传到远程，在远程合并
+>     - 一般不允许在远程服务器合并
 
-### 删除分支 ( git branch -b  )
+### 删除分支
 
-> 删除a分支
->
-> - git branch -d a
-> - 强制删除 : git branch -D a
+> - 删除a分支
+>  - git branch -d a
+> - 强制删除 
+>   - git branch -D a
 
-### 打标签( git tag )
+### 打标签  --  git tag 
 
 > 
 
@@ -203,86 +346,115 @@
 
 > - Git跟踪并管理的是修改，而非文件
 
-### SSH + 添加远程仓库
 
-#### 概述
+
+## SSH
+
+### 概述
 
 > - SSH是一种网络协议，用于计算机之间的加密登录。
 > - 大多数 Git 服务器都会选择使用 SSH 公钥来进行授权，
 >   所以想要在 GitHub 提交代码的第一步就是要先添加 SSH key 配置
 
-#### 添加SSH配置
+### 生成密钥
 
-> ![1726022476074](1726022476074.png)
+![1726022476074](1726022476074.png)
+
+![1726038658024](1726038658024.png)
+
+> - ssh-keygen -t rsa : 指定rsa算法生成密钥 
+> - 连接三个回车，生成两个文件
+>   - **id_rsa**：这是私钥文件。
+>   - **id_rsa.pub**：这是公钥文件。
+> - 文件默认存储地址：C:\Users\SYD\.ssh
+
+
+
+### 查看密钥
+
+> - $ cat ~/.ssh/id_rsa.pub
+
+
+
+### 配置Github
+
+> - 配置
 >
-> - 生成密钥
->   - ssh-keygen -t rsa : 指定rsa算法生成密钥 
->   - 连接三个回车，生成两个文件
->     - **id_rsa**：这是私钥文件。
->     - **id_rsa.pub**：这是公钥文件。
->   - 文件默认存储地址：C:\Users\SYD\.ssh
+> ![1726039172442](1726039172442.png)
 >
-> ![1726038658024](1726038658024.png)
+> - 测试
 >
-> - 产看密钥
->
->   - $ cat ~/.ssh/id_rsa.pub
->
->     
+>   ![1726039083880](1726039083880.png)
 >
 > 
->
-> - 配置Github
->
->   - 配置
->   
->   ![1726039172442](1726039172442.png)
->   
->   - 测试
->     
->     ![1726039083880](1726039083880.png)
->   
->   
->   
-> - 配置Gitee
->
-> ![1727403390550](Github.assets/1727403390550.png)
 
 
 
-###  推送与拉取
+### 配置Gitee
 
-#### 拉取( clone )
+![1727403390550](Github.assets/1727403390550.png)
 
-> - git clone git@github.com:syd3344/GitNote.git 
->   - 这便将github项目克隆到了本地
->   - 项目本身就是一个git仓库
->   - 在GitNote.git 下任意修改或者添加进行commit之后就可以Push
 
-#### 推送( Push )
 
-> - 拉去下来的仓库
->   - 推送到指定仓库  ——  git push <remote-name> <branch-name>
->     - git push origin master - 推送本地分支master到远程仓库origin       
->     - git push origin feature-branch - 推送本地分支feature-branch到远程仓库origin 
->   - 推送到指定仓库的指定分支   ——  git push origin <local-branch>:<remote-branch>
->     - 推送本地 master 分支内的 test.txt 文件 到远程仓库 Git Node 中 的main 分支  的示例代码
->     - git push origin master:main
->     - ![1726043010190](1726043010190.png)
->     - 这个错误是由于远程仓库的 `main` 分支包含一些你本地没有的更改，因此 Git 拒绝了你的推送。为了避免覆盖远程分支的已有更改，Git 需要你先拉取远程分支上的更改，并合并到本地的 `master` 分支中，然后再推送。
-> - 本地仓库推送
->   - 将本地项目与Github关联
->     - git remote add origin git@github.com:stormzhang/test.git
->     - 添加一个远程仓库
->     - 名字是： git@github.com:stormzhang/test.git
->     - orgin 是给远程仓库起的名字
->       - 仓库唯一时随便
->       - 不唯一时要区分
->   - 查看当前项目有哪些远程仓库
->     - git remote -v 
->     - ![1726040695096](1726040695096.png)
+## 在IDEA中使用Git
 
-#### 更新（pull）
+### 启用Git
+
+![1727430761454](Github.assets/1727430761454.png)
+
+### 过滤/忽略
+
+![1727432730637](Github.assets/1727432730637.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
